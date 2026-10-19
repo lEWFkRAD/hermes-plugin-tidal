@@ -1,0 +1,28 @@
+name: tidal
+label: TIDAL
+kind: standalone
+version: 0.1.0
+author: lewfkrad (built by Hermes on Jeff's laptop)
+homepage: https://github.com/tidal-api/tidalapi
+description: >
+  TIDAL for Hermes Agent: five tools (playback through local mpv, search,
+  playlists, library, mixes) over the unofficial TIDAL API via tidalapi.
+  Login is TIDAL's own device flow: `hermes tidal login` shows a URL and an
+  8-character code you enter at tidal.com/activate — no developer app needed.
+  Playback runs on this machine (mpv); TIDAL has no remote-device API like
+  Spotify Connect. Needs a TIDAL subscription (any tier).
+requires_hermes: ">=0.21.6"
+provides_tools:
+  - tidal_playback
+  - tidal_search
+  - tidal_playlists
+  - tidal_library
+  - tidal_mixes
+provides_hooks: []
+config_schema:
+  quality:
+    type: str
+    choices: [low, high, lossless, hi_res]
+    default: high
+    label: Max streaming quality
+    description: Ceiling for streamed audio. lossless/hi_res need a HiFi Plus tier and enough bandwidth.
