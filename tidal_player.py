@@ -14,11 +14,18 @@ import signal
 import socket
 import subprocess
 import time
-from pathlib import Path
+from hermes_constants import get_hermes_home
 
-STATE_DIR = Path.home() / ".hermes" / "tidal"
-STATE_FILE = STATE_DIR / "player.json"
-SOCK_PATH = STATE_DIR / "mpv.sock"
+def _state_dir():
+    return get_hermes_home() / "plugin-data" / "tidal"
+
+
+def _state_file():
+    return _state_dir() / "player.json"
+
+
+def _sock_path():
+    return _state_dir() / "mpv.sock"
 
 
 class PlayerError(Exception):
@@ -34,16 +41,16 @@ def _mpv_bin() -> str:
 
 def _read_state() -> dict:
     try:
-        return json.loads(STATE_FILE.read_text())
+        return json.loads(_state_file().read_text())
     except Exception:
         return {}
 
 
 def _write_state(state: dict) -> None:
-    STATE_DIR.mkdir(parents=True, exist_ok=True)
-    tmp = STATE_FILE.with_suffix(".tmp")
+    _state_dir().mkdir(parents=True, exist_ok=True)
+    tmp = _state_file().with_suffix(".tmp")
     tmp.write_text(json.dumps(state))
-    tmp.replace(STATE_FILE)
+    tmp.replace(_state_file())
 
 
 def _pid_alive(pid: int) -> bool:
@@ -59,7 +66,7 @@ def _pid_alive(pid: int) -> bool:
 def _mpv_socket(command: str | dict, timeout: float = 2.0):
     """Send one mpv IPC command and return the reply's 'data' (or None)."""
     state = _read_state()
-    sock_path = state.get("socket") or str(SOCK_PATH)
+    sock_path = state.get("socket") or str(_sock_path())
     payload = command if isinstance(command, str) else json.dumps([command])
     try:
         with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as s:
@@ -104,21 +111,21 @@ def _mpv_socket(command: str | dict, timeout: float = 2.0):
 def play_url(url: str, title: str = "", quality: str = "") -> dict:
     """Start (or replace) playback of a direct stream URL in mpv."""
     stop()
-    STATE_DIR.mkdir(parents=True, exist_ok=True)
+    _state_dir().mkdir(parents=True, exist_ok=True)
     try:
-        SOCK_PATH.unlink(missing_ok=True)
+        _sock_path().unlink(missing_ok=True)
     except Exception:
         pass
     args = [
         _mpv_bin(),
-        "--input-ipc-server=" + str(SOCK_PATH),
+        "--input-ipc-server=" + str(_sock_path()),
         "--no-video",
         "--really-quiet",
         "--volume=70",
     ]
     if quality == "hi_res":
         args += ["--audio-display=no"]
-    args.append(url)
+    args.extend(["--", url])
     proc = subprocess.Popen(
         args,
         stdin=subprocess.DEVNULL,
@@ -128,10 +135,10 @@ def play_url(url: str, title: str = "", quality: str = "") -> dict:
     )
     # wait for the socket to appear (mpv creates it on startup)
     for _ in range(30):
-        if SOCK_PATH.exists():
+        if _sock_path().exists():
             break
         time.sleep(0.1)
-    state = {"pid": proc.pid, "socket": str(SOCK_PATH), "title": title, "url": url, "started": time.time()}
+    state = {"pid": proc.pid, "socket": str(_sock_path()), "title": title, "url": url, "started": time.time()}
     _write_state(state)
     return state
 

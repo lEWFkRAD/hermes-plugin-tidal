@@ -7,8 +7,9 @@ homepage: https://github.com/tidal-api/tidalapi
 description: >
   TIDAL for Hermes Agent: five tools (playback through local mpv, search,
   playlists, library, mixes) over the unofficial TIDAL API via tidalapi.
-  Login is TIDAL's own device flow: `hermes tidal login` shows a URL and an
-  8-character code you enter at tidal.com/activate — no developer app needed.
+  Login uses TIDAL's PKCE paste-back flow: hermes tidal login shows a URL;
+  sign in, then paste the 'Oops' page URL back into the terminal.
+  No developer app is needed.
   Playback runs on this machine (mpv); TIDAL has no remote-device API like
   Spotify Connect. Needs a TIDAL subscription (any tier).
 requires_hermes: ">=0.21.6"

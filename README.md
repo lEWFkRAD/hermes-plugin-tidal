@@ -37,7 +37,7 @@ hermes tidal login
 The command prints a TIDAL login URL. Open it, log in with your TIDAL
 account, and when the browser lands on an "Oops" page, copy that page's
 URL from the address bar and paste it back to finish the login. The
-session is saved to `~/.hermes/tidal/session.json` (tidalapi's own
+session is saved to `<Hermes profile home>/plugin-data/tidal/session.json` (tidalapi's own
 session file format).
 
 Check state or log out with:
@@ -62,3 +62,8 @@ bandwidth.
 - This is an unofficial integration built on the community `tidalapi`
   library; it is not affiliated with or endorsed by TIDAL.
 - Author: lewfkrad (built by Hermes on the author's laptop).
+
+Login requires an interactive terminal and keeps PKCE state in memory.
+Session files have owner-only POSIX permissions; Windows privacy follows the
+profile directory ACL. Player state and its socket use the same profile directory.
+Older shared sessions are not imported across profiles; log in in each profile.

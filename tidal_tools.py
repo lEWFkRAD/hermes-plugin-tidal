@@ -302,7 +302,7 @@ def _handle_tidal_mixes(args: dict, **kw) -> str:
 
 def _schema(name: str, desc: str, props: dict) -> dict:
     return {"name": name, "description": desc,
-            "input_schema": {"type": "object", "properties": props, "required": ["action"]}}
+            "parameters": {"type": "object", "properties": props, "required": ["action"]}}
 
 
 _STR = {"type": "string"}
