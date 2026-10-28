@@ -1,3 +1,10 @@
+<!-- project-home:start -->
+**[TIDAL for Hermes project homepage](https://lewfkrad.github.io/hermes-plugin-tidal/)** · [Documentation](https://github.com/lEWFkRAD/hermes-plugin-tidal#login)
+
+Search your TIDAL library, organize playlists, and control local music playback through Hermes.
+
+<!-- project-home:end -->
+
 # TIDAL for Hermes Agent
 
 A Hermes plugin that gives the agent five TIDAL tools — playback, search,
