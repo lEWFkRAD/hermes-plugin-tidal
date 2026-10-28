@@ -1,4 +1,6 @@
 <!-- project-home:start -->
+![hermes-plugin-tidal project banner](https://raw.githubusercontent.com/lEWFkRAD/hermes-plugin-tidal/85c864a5ff45d69cdea6d54d24c010080cc17a40/docs/banner.jpg)
+
 **[TIDAL for Hermes project homepage](https://lewfkrad.github.io/hermes-plugin-tidal/)** · [Documentation](https://github.com/lEWFkRAD/hermes-plugin-tidal#login)
 
 Search your TIDAL library, organize playlists, and control local music playback through Hermes.
